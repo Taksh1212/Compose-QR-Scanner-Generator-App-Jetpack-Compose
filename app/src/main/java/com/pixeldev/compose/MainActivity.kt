@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.pixeldev.compose.presentation.navigation.AppNavHost
-import com.pixeldev.compose.presentation.uploadImage.UploadScreen
 import com.pixeldev.compose.ui.theme.ComposeKtorDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +23,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeKtorDemoTheme {
                 AppNavHost()
-                //UploadScreen()
             }
         }
     }

@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.camera.mlkit.vision)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -109,4 +110,19 @@ dependencies {
     implementation (libs.ktor.client.serialization)
     implementation (libs.ktor.client.logging)
     implementation(libs.ktor.client.okhttp)
+
+    implementation ("com.google.mlkit:barcode-scanning:17.3.0")
+
+    // CameraX
+    implementation ("androidx.camera:camera-camera2:1.4.2")
+    implementation ("androidx.camera:camera-lifecycle:1.4.2")
+    implementation ("androidx.camera:camera-view:1.4.2")
+    implementation ("androidx.camera:camera-extensions:1.4.2")
+
+
+    val zxingVersion = "3.5.1"
+    implementation("com.google.zxing:core:$zxingVersion")
+
+    implementation ("androidx.compose.runtime:runtime-livedata:1.8.3")
+
 }

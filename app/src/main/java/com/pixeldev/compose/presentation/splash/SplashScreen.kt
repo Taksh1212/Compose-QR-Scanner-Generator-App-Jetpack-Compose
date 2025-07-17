@@ -12,7 +12,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.pixeldev.compose.presentation.user.UserViewModel
 import com.pixeldev.compose.domain.model.UiState
 import com.pixeldev.compose.presentation.navigation.Screen
 import kotlinx.coroutines.delay
@@ -20,22 +19,12 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(
     navController: NavController,
-    userViewModel: UserViewModel = hiltViewModel()
 ) {
-    val savedLogin by userViewModel.loginResponse.collectAsState(initial = null)
-
     // Navigate after checking saved login
-    LaunchedEffect(savedLogin) {
-        Log.e("TAG_", "SplashScreen: "+savedLogin?.username )
+    LaunchedEffect(Unit) {
         delay(1500) // Optional splash delay for smoother transition
-        if (savedLogin != null) {
-            navController.navigate(Screen.UserDetails.route) {
-                popUpTo(Screen.Splash.route) { inclusive = true }
-            }
-        } else {
-            navController.navigate(Screen.Login.route) {
-                popUpTo(Screen.Splash.route) { inclusive = true }
-            }
+        navController.navigate(Screen.Home.route) {
+            popUpTo(Screen.Splash.route) { inclusive = true }
         }
     }
 
