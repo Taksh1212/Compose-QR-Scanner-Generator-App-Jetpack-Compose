@@ -47,9 +47,11 @@ import androidx.compose.material.icons.outlined.HeadsetMic
 import androidx.compose.material.icons.outlined.QuestionAnswer
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.pixeldev.compose.R
 import com.pixeldev.compose.presentation.create.QrGeneratorScreen
 import com.pixeldev.compose.presentation.history.QrListScreen
 import com.pixeldev.compose.presentation.saved.FavoriteScreen
@@ -136,7 +138,7 @@ fun MainScreen(rootNavController: NavHostController) {
                     // Profile Section
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Image(
-                            painter = rememberAsyncImagePainter("https://your-image-url.com"), // Replace with actual URL
+                            painter = rememberAsyncImagePainter(R.drawable.ic_launcher), // Replace with actual URL
                             contentDescription = "Profile Picture",
                             contentScale = ContentScale.Crop, // Ensure image fills the circle
                             modifier = Modifier
@@ -146,7 +148,7 @@ fun MainScreen(rootNavController: NavHostController) {
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "ABC DEF",
+                            text = stringResource(R.string.app_name),
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp
