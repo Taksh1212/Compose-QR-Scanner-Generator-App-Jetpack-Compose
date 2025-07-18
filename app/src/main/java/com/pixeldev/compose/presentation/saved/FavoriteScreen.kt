@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,8 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import com.pixeldev.compose.data.local.QrCodeEntity
 import com.pixeldev.compose.presentation.history.QrListItem
+import com.pixeldev.compose.ui.theme.DarkBackground
+
 @Composable
 fun FavoriteScreen(viewModel: QrViewModel) {
     val favorites by viewModel.favorites.observeAsState(emptyList())
@@ -36,7 +39,7 @@ fun FavoriteScreen(viewModel: QrViewModel) {
         // ⛔ No items message
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize()  .background(DarkBackground)
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -48,7 +51,10 @@ fun FavoriteScreen(viewModel: QrViewModel) {
         }
     } else {
         // ✅ Show the list
-        LazyColumn {
+        LazyColumn( modifier = Modifier
+            .fillMaxSize()
+            .background(DarkBackground)
+        ) {
             items(favorites.size) { index ->
                 val qr = favorites[index]
                 QrListItem(

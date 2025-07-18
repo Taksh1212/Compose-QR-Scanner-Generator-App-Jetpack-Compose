@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -62,6 +63,9 @@ import com.pixeldev.compose.presentation.drawer.PrivacyPolicyScreen
 import com.pixeldev.compose.presentation.drawer.TermsConditionsScreen
 import com.pixeldev.compose.presentation.navigation.AppRoutes
 import com.pixeldev.compose.presentation.scan.ScanQrScreen
+import com.pixeldev.compose.ui.theme.DarkSurface
+import com.pixeldev.compose.ui.theme.PrimaryAccent
+import com.pixeldev.compose.ui.theme.SecondaryAccent
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
@@ -81,13 +85,14 @@ fun MainScreen(rootNavController: NavHostController) {
     )
 
     val drawerItemColors = NavigationDrawerItemDefaults.colors(
-        selectedContainerColor = Color(0xFFFF9800), // Orange background when selected
+        selectedContainerColor = PrimaryAccent,
         unselectedContainerColor = Color.Transparent,
         selectedIconColor = Color.White,
         unselectedIconColor = Color.White.copy(alpha = 0.7f),
         selectedTextColor = Color.White,
         unselectedTextColor = Color.White.copy(alpha = 0.7f)
     )
+
     val bottomNavController = rememberNavController()
 
     // 💡 We need the state of the bottom nav controller for the bottom bar and FAB
@@ -124,7 +129,7 @@ fun MainScreen(rootNavController: NavHostController) {
                     modifier = Modifier
                         .fillMaxSize()
                         .fillMaxHeight()
-                        .background(Color(0xFF1F1F1F))
+                        .background(DarkSurface)
                         .padding(top = 60.dp)
                         .padding(20.dp)
                 ) {
@@ -137,7 +142,7 @@ fun MainScreen(rootNavController: NavHostController) {
                             modifier = Modifier
                                 .size(80.dp)
                                 .clip(CircleShape)
-                                .border(3.dp, Color(0xFFFF9800), CircleShape)
+                                .border(3.dp, SecondaryAccent, CircleShape)
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
@@ -268,17 +273,17 @@ fun MainScreen(rootNavController: NavHostController) {
 
                     // Logout button at the bottom
                     NavigationDrawerItem(
-                        label = { Text("Logout", color = Color(0xFFFF9800)) },
+                        label = { Text("Exit", color = SecondaryAccent) },
                         icon = {
                             Icon(
-                                Icons.Default.Logout,
+                                Icons.AutoMirrored.Filled.Logout,
                                 contentDescription = null,
-                                tint = Color(0xFFFF9800)
+                                tint =SecondaryAccent
                             )
                         },
                         selected = false,
                         onClick = {
-                            // TODO: Handle logout
+                            // TODO: Handle Exit
                         },
                         colors = drawerItemColors
                     )
@@ -291,11 +296,11 @@ fun MainScreen(rootNavController: NavHostController) {
             topBar = {
                 TopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color(0xFF2C2C2C), // dark gray background
+                        containerColor = DarkSurface,
                         titleContentColor = Color.White,
                         navigationIconContentColor = Color.White,
                         actionIconContentColor = Color.White
-                    ),
+                ),
                     title = {
                         Text(
                             // We use bottomCurrentRoute here to get the title for the main screens
@@ -327,12 +332,12 @@ fun MainScreen(rootNavController: NavHostController) {
                         onClick = {
                             bottomNavController.navigate(BottomNavItem.Scan.route)
                         },
-                        containerColor = Color(0xFFFF9800),
+                        containerColor = PrimaryAccent,
                         contentColor = Color.White,
                         shape = CircleShape,
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .size(80.dp)
+                            .size(70.dp)
                             .offset(y = 50.dp)
                             .border(
                                 width = 3.dp,
@@ -343,7 +348,7 @@ fun MainScreen(rootNavController: NavHostController) {
                         Icon(
                             imageVector = BottomNavItem.Scan.icon,
                             contentDescription = "Scan",
-                            modifier = Modifier.size(50.dp)
+                            modifier = Modifier.size(40.dp)
                         )
                     }
                 }
@@ -388,7 +393,7 @@ fun BottomNavigationBar(
     currentRoute: String?
 ) {
     NavigationBar(
-        containerColor = Color(0xFF2C2C2C),
+        containerColor = DarkSurface,
         tonalElevation = 5.dp
     ) {
         items.forEach { item ->
@@ -401,7 +406,7 @@ fun BottomNavigationBar(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.offset(y = 50.dp) // move label down to match others
+                        modifier = Modifier.offset(y = 20.dp) // move label down to match others
                     ) {
                         //Spacer(modifier = Modifier.height(36.dp)) // match icon height visually
                         Text(
@@ -431,8 +436,8 @@ fun BottomNavigationBar(
                         Text(item.label, fontWeight = FontWeight.Bold)
                     },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color(0xFFFF9800),
-                        selectedTextColor = Color(0xFFFF9800),
+                        selectedIconColor = PrimaryAccent,
+                        selectedTextColor = PrimaryAccent,
                         indicatorColor = Color.Transparent,
                         unselectedIconColor = Color.White.copy(alpha = 0.7f),
                         unselectedTextColor = Color.White.copy(alpha = 0.7f)
@@ -509,6 +514,7 @@ fun RootNavigationHome() {
             DeleteAccountScreen(navController = rootNavController)
         }
     }
+
 }
 
 sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {

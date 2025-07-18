@@ -17,6 +17,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.pixeldev.compose.ui.theme.DarkBackground
+import com.pixeldev.compose.ui.theme.DarkSurface
+import com.pixeldev.compose.ui.theme.PrimaryText
 
 @Composable
 fun DummyListScreen() {
@@ -31,7 +34,7 @@ fun DummyListScreen() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(DarkBackground),  // 🌙 Apply background color
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -41,18 +44,15 @@ fun DummyListScreen() {
     }
 }
 
-data class DummyItem(
-    val id: Int,
-    val title: String,
-    val imageUrl: String
-)
-
 @Composable
 fun DummyListItem(item: DummyItem) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(250.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = DarkSurface  // 🟦 Use lighter dark color for card
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Column {
@@ -68,8 +68,16 @@ fun DummyListItem(item: DummyItem) {
             Text(
                 text = item.title,
                 style = MaterialTheme.typography.titleMedium,
+                color = PrimaryText,  // 📝 Ensure text stands out
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
     }
 }
+
+
+data class DummyItem(
+    val id: Int,
+    val title: String,
+    val imageUrl: String
+)

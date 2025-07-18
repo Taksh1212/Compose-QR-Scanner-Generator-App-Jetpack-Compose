@@ -1,6 +1,7 @@
 package com.pixeldev.compose.presentation.history
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,41 +16,51 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.pixeldev.compose.core.common.Utlis.byteArrayToBitmap
 import com.pixeldev.compose.presentation.QrViewModel
 import com.pixeldev.compose.data.local.QrCodeEntity
+import com.pixeldev.compose.ui.theme.DarkBackground
+import com.pixeldev.compose.ui.theme.DarkSurface
+import com.pixeldev.compose.ui.theme.PrimaryAccent
+import com.pixeldev.compose.ui.theme.PrimaryText
+import com.pixeldev.compose.ui.theme.SuccessColor
 
 @Composable
 fun QrListScreen(viewModel: QrViewModel) {
     val qrList by viewModel.allQrCodes.observeAsState(emptyList())
 
     if (qrList.isEmpty()) {
-        // Empty state UI
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DarkBackground),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = "No QR codes found.")
+            Text(
+                text = "No QR codes found.",
+                color = PrimaryText
+            )
         }
     } else {
-        // List UI
-        LazyColumn {
-            items(qrList.size) { qrCode ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DarkBackground)
+        ) {
+            items(qrList.size) { index ->
                 QrListItem(
-                    qrList[qrCode],
-                    onDelete = { viewModel.delete(qrList[qrCode]) },
-                    onFavoriteToggle = { viewModel.toggleFavorite(qrList[qrCode]) }
+                    qr = qrList[index],
+                    onDelete = { viewModel.delete(qrList[index]) },
+                    onFavoriteToggle = { viewModel.toggleFavorite(qrList[index]) }
                 )
             }
         }
     }
 }
-
-
-
 @Composable
 fun QrListItem(qr: QrCodeEntity, onDelete: () -> Unit, onFavoriteToggle: () -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
@@ -58,7 +69,10 @@ fun QrListItem(qr: QrCodeEntity, onDelete: () -> Unit, onFavoriteToggle: () -> U
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { showDialog = true }, // 💡 Show dialog on click
+            .clickable { showDialog = true },
+        colors = CardDefaults.cardColors(
+            containerColor = DarkSurface  // 🟦 Card background
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
@@ -80,18 +94,24 @@ fun QrListItem(qr: QrCodeEntity, onDelete: () -> Unit, onFavoriteToggle: () -> U
                 text = qr.content,
                 modifier = Modifier.weight(1f),
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = PrimaryText  // 📝 Make text readable
             )
 
             IconButton(onClick = onFavoriteToggle) {
                 Icon(
                     imageVector = if (qr.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = "Toggle Favorite"
+                    contentDescription = "Toggle Favorite",
+                    tint = if (qr.isFavorite) SuccessColor else PrimaryAccent
                 )
             }
 
             IconButton(onClick = onDelete) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete")
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete",
+                    tint = Color.Red.copy(alpha = 0.8f)
+                )
             }
         }
     }
@@ -99,8 +119,11 @@ fun QrListItem(qr: QrCodeEntity, onDelete: () -> Unit, onFavoriteToggle: () -> U
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
+            containerColor = DarkSurface,       // 🟦 Dialog background
+            titleContentColor = PrimaryText,
+            textContentColor = PrimaryText,
             title = {
-                Text("QR Details")
+                Text("QR Details", color = PrimaryText)
             },
             text = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -118,6 +141,7 @@ fun QrListItem(qr: QrCodeEntity, onDelete: () -> Unit, onFavoriteToggle: () -> U
                     Text(
                         text = qr.content,
                         style = MaterialTheme.typography.bodyLarge,
+                        color = PrimaryText,
                         modifier = Modifier.padding(8.dp)
                     )
                 }
@@ -129,7 +153,8 @@ fun QrListItem(qr: QrCodeEntity, onDelete: () -> Unit, onFavoriteToggle: () -> U
                 }) {
                     Icon(
                         imageVector = if (qr.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = "Toggle Favorite"
+                        contentDescription = "Toggle Favorite",
+                        tint = if (qr.isFavorite) SuccessColor else PrimaryAccent
                     )
                 }
             },
@@ -138,7 +163,11 @@ fun QrListItem(qr: QrCodeEntity, onDelete: () -> Unit, onFavoriteToggle: () -> U
                     onDelete()
                     showDialog = false
                 }) {
-                    Icon(Icons.Default.Delete, contentDescription = "Delete")
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete",
+                        tint = Color.Red.copy(alpha = 0.8f)
+                    )
                 }
             }
         )

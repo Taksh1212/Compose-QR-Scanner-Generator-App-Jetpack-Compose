@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
@@ -23,11 +26,17 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import com.pixeldev.compose.presentation.QrViewModel
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
+import com.pixeldev.compose.presentation.QrViewModel
 import com.pixeldev.compose.core.common.Utlis.bitmapToByteArray
 import com.pixeldev.compose.data.local.QrCodeEntity
+import com.pixeldev.compose.ui.theme.DarkBackground
+import com.pixeldev.compose.ui.theme.DarkSurface
+import com.pixeldev.compose.ui.theme.PrimaryAccent
+import com.pixeldev.compose.ui.theme.PrimaryBlack
+import com.pixeldev.compose.ui.theme.PrimaryText
+import com.pixeldev.compose.ui.theme.SuccessColor
 
 @Composable
 fun QrGeneratorScreen(viewModel: QrViewModel) {
@@ -36,16 +45,36 @@ fun QrGeneratorScreen(viewModel: QrViewModel) {
 
     val context = LocalContext.current
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DarkBackground) // 🌑 Screen background
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
             value = text,
             onValueChange = { text = it },
-            label = { Text("Enter text to generate QR") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Enter text to generate QR", color = PrimaryText) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(DarkSurface, shape = RoundedCornerShape(8.dp)), // 🟦 Field background
+            colors = TextFieldDefaults.colors(
+                focusedTextColor = PrimaryText,
+                unfocusedTextColor = PrimaryText.copy(alpha = 0.8f),
+                disabledTextColor = PrimaryText.copy(alpha = 0.3f),
+
+                focusedContainerColor = DarkSurface,
+                unfocusedContainerColor = DarkSurface,
+
+                cursorColor = PrimaryAccent,
+
+                focusedIndicatorColor = PrimaryAccent,
+                unfocusedIndicatorColor = PrimaryText.copy(alpha = 0.5f),
+
+                focusedLabelColor = PrimaryAccent,
+                unfocusedLabelColor = PrimaryText.copy(alpha = 0.7f)
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -56,7 +85,11 @@ fun QrGeneratorScreen(viewModel: QrViewModel) {
                     generatedText = text
                 }
             },
-            enabled = text.isNotBlank()
+            enabled = text.isNotBlank(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = PrimaryAccent,
+                contentColor =PrimaryBlack
+            )
         ) {
             Text("Generate QR")
         }
@@ -69,7 +102,9 @@ fun QrGeneratorScreen(viewModel: QrViewModel) {
                 Image(
                     bitmap = it.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier.size(200.dp)
+                    modifier = Modifier
+                        .size(200.dp)
+                        .border(2.dp, PrimaryAccent, shape = RoundedCornerShape(8.dp))
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -80,18 +115,22 @@ fun QrGeneratorScreen(viewModel: QrViewModel) {
                         viewModel.insert(data, isScanned = false, image = imageBytes)
                         Toast.makeText(context, "QR saved", Toast.LENGTH_SHORT).show()
 
-                        // Clear input and generated QR after saving
+                        // Reset after saving
                         text = ""
                         generatedText = null
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = SuccessColor,
+                        contentColor = PrimaryBlack
+                    )
                 ) {
                     Text("Save QR")
                 }
-
             }
         }
     }
 }
+
 
 fun generateQrCode(text: String): Bitmap? {
     return try {
