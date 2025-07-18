@@ -53,6 +53,14 @@ import com.pixeldev.compose.presentation.create.QrGeneratorScreen
 import com.pixeldev.compose.presentation.history.QrListScreen
 import com.pixeldev.compose.presentation.saved.FavoriteScreen
 import com.pixeldev.compose.presentation.QrViewModel
+import com.pixeldev.compose.presentation.drawer.AboutScreen
+import com.pixeldev.compose.presentation.drawer.ContactUsScreen
+import com.pixeldev.compose.presentation.drawer.DeleteAccountScreen
+import com.pixeldev.compose.presentation.drawer.DummyListScreen
+import com.pixeldev.compose.presentation.drawer.FAQsScreen
+import com.pixeldev.compose.presentation.drawer.PrivacyPolicyScreen
+import com.pixeldev.compose.presentation.drawer.TermsConditionsScreen
+import com.pixeldev.compose.presentation.navigation.AppRoutes
 import com.pixeldev.compose.presentation.scan.ScanQrScreen
 
 @Composable
@@ -60,14 +68,6 @@ fun HomeScreen(navController: NavHostController) {
     RootNavigationHome()
 }
 
-sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
-    object History : BottomNavItem("history", Icons.Default.History, "History")
-    object Create : BottomNavItem("create", Icons.Default.Add, "Create")
-    object Scan : BottomNavItem("scan", Icons.Default.QrCodeScanner, "") // placeholder
-    object Saved : BottomNavItem("saved", Icons.Default.Favorite, "Saved")
-    object Settings : BottomNavItem("settings", Icons.Default.Settings, "Settings")
-
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -468,17 +468,7 @@ fun Screen(text: String) {
 
 // --- AppRoutes.kt (Updated) ---
 
-object AppRoutes {
-    const val MAIN_SCREEN = "main_screen"
-    const val ABOUT_US = "about_us"
-    const val PRIVACY_POLICY = "privacy_policy"
 
-    // New Routes for sidebar pages
-    const val TERMS_CONDITIONS = "terms_conditions"
-    const val CONTACT_US = "contact_us"
-    const val FAQS = "faqs"
-    const val DELETE_ACCOUNT = "delete_account"
-}
 
 // --- RootNavigation.kt (Updated) ---
 
@@ -521,201 +511,12 @@ fun RootNavigationHome() {
     }
 }
 
-// --- Screens.kt (Updated with new pages) ---
+sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
+    object History : BottomNavItem("history", Icons.Default.History, "History")
+    object Create : BottomNavItem("create", Icons.Default.Add, "Create")
+    object Scan : BottomNavItem("scan", Icons.Default.QrCodeScanner, "") // placeholder
+    object Saved : BottomNavItem("saved", Icons.Default.Favorite, "Saved")
+    object Settings : BottomNavItem("settings", Icons.Default.Settings, "Settings")
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AboutScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("About Us") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padd ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(padd), contentAlignment = Alignment.Center) {
-            Text("About Us Full Screen Content")
-        }
-    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PrivacyPolicyScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Privacy Policy") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padd ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(padd), contentAlignment = Alignment.Center) {
-            Text("Privacy Policy Full Screen Content")
-        }
-    }
-}
-
-// New Screens
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TermsConditionsScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Terms & Conditions") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padd ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(padd), contentAlignment = Alignment.Center) {
-            Text("Terms & Conditions Screen Content")
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ContactUsScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Contact Us") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padd ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(padd), contentAlignment = Alignment.Center) {
-            Text("Contact Us Screen Content")
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun FAQsScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("FAQs") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padd ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(padd), contentAlignment = Alignment.Center) {
-            Text("FAQs Screen Content")
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DeleteAccountScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Delete Account") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { padd ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(padd), contentAlignment = Alignment.Center) {
-            // Text("Delete Account Screen Content")
-            DummyListScreen()
-        }
-    }
-}
-
-@Composable
-fun DummyListScreen() {
-    val items = List(100) { index ->
-        DummyItem(
-            id = index,
-            title = "Item #$index",
-            imageUrl = "https://picsum.photos/seed/$index/400/200"
-        )
-    }
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(items.size) { item ->
-            DummyListItem(items[item])
-        }
-    }
-}
-
-data class DummyItem(
-    val id: Int,
-    val title: String,
-    val imageUrl: String
-)
-
-@Composable
-fun DummyListItem(item: DummyItem) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(250.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-    ) {
-        Column {
-            AsyncImage(
-                model = item.imageUrl,
-                contentDescription = item.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(160.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = item.title,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-        }
-    }
-}

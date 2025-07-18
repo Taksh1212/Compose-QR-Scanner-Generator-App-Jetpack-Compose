@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="Compose_DI_Module.app" target="21" />
+      <module name="QR_.app" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>

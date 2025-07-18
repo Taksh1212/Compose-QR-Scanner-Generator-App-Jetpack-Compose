@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Compose Ktor Demo"
+rootProject.name = "QR Scan Compose"
 include(":app")
