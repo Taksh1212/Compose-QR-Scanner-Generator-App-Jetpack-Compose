@@ -58,7 +58,7 @@ fun QrGeneratorScreen(viewModel: QrViewModel) {
             label = { Text("Enter text to generate QR", color = PrimaryText) },
             modifier = Modifier
                 .fillMaxWidth()
-                .background(DarkSurface, shape = RoundedCornerShape(8.dp)), // 🟦 Field background
+               /* .background(DarkSurface, shape = RoundedCornerShape(8.dp))*/, // 🟦 Field background
             colors = TextFieldDefaults.colors(
                 focusedTextColor = PrimaryText,
                 unfocusedTextColor = PrimaryText.copy(alpha = 0.8f),
@@ -147,3 +147,4 @@ fun generateQrCode(text: String): Bitmap? {
         null
     }
 }
+/*To add multiple QR types (like Text, URL, Email, Phone, SMS, WiFi, Geo, etc.) to your QR code generator screen, we can introduce a dropdown (or segmented control) that allows the user to choose the QR content type. Based on the selected type, you can generate the appropriate string format.*/

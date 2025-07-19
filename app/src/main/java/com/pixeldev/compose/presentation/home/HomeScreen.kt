@@ -1,5 +1,8 @@
 package com.pixeldev.compose.presentation.home
 
+import android.app.Activity
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -47,18 +50,19 @@ import androidx.compose.material.icons.outlined.HeadsetMic
 import androidx.compose.material.icons.outlined.QuestionAnswer
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.pixeldev.compose.R
+import com.pixeldev.compose.core.common.Utlis.CommonAlertDialog
 import com.pixeldev.compose.presentation.create.QrGeneratorScreen
 import com.pixeldev.compose.presentation.history.QrListScreen
 import com.pixeldev.compose.presentation.saved.FavoriteScreen
 import com.pixeldev.compose.presentation.QrViewModel
 import com.pixeldev.compose.presentation.drawer.AboutScreen
 import com.pixeldev.compose.presentation.drawer.ContactUsScreen
-import com.pixeldev.compose.presentation.drawer.DeleteAccountScreen
 import com.pixeldev.compose.presentation.drawer.DummyListScreen
 import com.pixeldev.compose.presentation.drawer.FAQsScreen
 import com.pixeldev.compose.presentation.drawer.PrivacyPolicyScreen
@@ -67,6 +71,7 @@ import com.pixeldev.compose.presentation.navigation.AppRoutes
 import com.pixeldev.compose.presentation.scan.ScanQrScreen
 import com.pixeldev.compose.ui.theme.DarkSurface
 import com.pixeldev.compose.ui.theme.PrimaryAccent
+import com.pixeldev.compose.ui.theme.PrimaryText
 import com.pixeldev.compose.ui.theme.SecondaryAccent
 
 @Composable
@@ -99,7 +104,8 @@ fun MainScreen(rootNavController: NavHostController) {
 
     // 💡 We need the state of the bottom nav controller for the bottom bar and FAB
     val bottomCurrentBackStack by bottomNavController.currentBackStackEntryAsState()
-    val bottomCurrentRoute = bottomCurrentBackStack?.destination?.route ?: BottomNavItem.History.route
+    val bottomCurrentRoute =
+        bottomCurrentBackStack?.destination?.route ?: BottomNavItem.History.route
 
     // 💡 We need the state of the ROOT nav controller for the drawer selection
     val rootCurrentBackStack by rootNavController.currentBackStackEntryAsState()
@@ -126,6 +132,8 @@ fun MainScreen(rootNavController: NavHostController) {
                     WindowInsetsSides.Horizontal + WindowInsetsSides.End
                 )
             ) {
+                val context = LocalContext.current as Activity
+                val showExitDialog = remember { mutableStateOf(false) }
                 // 💡 Apply background to a Box/Column inside the drawer sheet
                 Column(
                     modifier = Modifier
@@ -252,7 +260,7 @@ fun MainScreen(rootNavController: NavHostController) {
                         colors = drawerItemColors
                     )
 
-                    // Delete Account
+                  /*  // Delete Account
                     NavigationDrawerItem(
                         label = { Text("Delete Account", color = Color.White) },
                         icon = {
@@ -269,27 +277,48 @@ fun MainScreen(rootNavController: NavHostController) {
                             scope.launch { drawerState.close() }
                         },
                         colors = drawerItemColors
-                    )
+                    )*/
 
                     Spacer(modifier = Modifier.weight(1f))
 
                     // Logout button at the bottom
                     NavigationDrawerItem(
-                        label = { Text("Exit", color = SecondaryAccent) },
+                        label = { Text("Exit", color = PrimaryText) },
                         icon = {
                             Icon(
                                 Icons.AutoMirrored.Filled.Logout,
                                 contentDescription = null,
-                                tint =SecondaryAccent
+                                tint = PrimaryText
                             )
                         },
                         selected = false,
                         onClick = {
-                            // TODO: Handle Exit
+                            showExitDialog.value = true
                         },
                         colors = drawerItemColors
                     )
                 }
+                // --- Exit App Dialog ---
+                CommonAlertDialog(
+                    showDialog = showExitDialog.value,
+                    onDismissRequest = {
+                        showExitDialog.value = false
+                    }, // Dismiss if user taps outside
+                    title = "Exit Application?",
+                    message = "Are you sure you want to close the app?",
+                    onConfirm = {
+                        // This will close the current activity and exit the app
+                        context.finish()
+                        showExitDialog.value = false // Explicitly hide the dialog
+                    },
+                    onCancel = {
+                        Toast.makeText(context, "Exit cancelled.", Toast.LENGTH_SHORT).show()
+                        showExitDialog.value = false // Hide the dialog
+                    },
+                    confirmButtonText = "Yes, Exit",
+                    cancelButtonText = "No, Stay"
+                )
+
             }
         }
     ) {
@@ -302,7 +331,7 @@ fun MainScreen(rootNavController: NavHostController) {
                         titleContentColor = Color.White,
                         navigationIconContentColor = Color.White,
                         actionIconContentColor = Color.White
-                ),
+                    ),
                     title = {
                         Text(
                             // We use bottomCurrentRoute here to get the title for the main screens
@@ -381,7 +410,12 @@ fun BottomNavGraph(
     ) {
         composable(BottomNavItem.Create.route) { QrGeneratorScreen(viewModel) }
         composable(BottomNavItem.History.route) { QrListScreen(viewModel) }
-        composable(BottomNavItem.Scan.route) { ScanQrScreen(navController = navController, viewModel = viewModel) }
+        composable(BottomNavItem.Scan.route) {
+            ScanQrScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
         composable(BottomNavItem.Saved.route) { FavoriteScreen(viewModel) }
         composable(BottomNavItem.Settings.route) { Screen("Settings Screen") }
     }
@@ -415,7 +449,9 @@ fun BottomNavigationBar(
                             text = "Scan",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (currentRoute == BottomNavItem.Scan.route) PrimaryAccent else Color.White.copy(alpha = 0.7f)
+                            color = if (currentRoute == BottomNavItem.Scan.route) PrimaryAccent else Color.White.copy(
+                                alpha = 0.7f
+                            )
                         )
                     }
                 }
@@ -476,12 +512,13 @@ fun Screen(text: String) {
 // --- AppRoutes.kt (Updated) ---
 
 
-
 // --- RootNavigation.kt (Updated) ---
 
 @Composable
 fun RootNavigationHome() {
+    val context = LocalContext.current
     val rootNavController = rememberNavController()
+    val showDeleteAccountDialog = remember { mutableStateOf(false) }
 
     NavHost(navController = rootNavController, startDestination = AppRoutes.MAIN_SCREEN) {
         composable(AppRoutes.MAIN_SCREEN) {
@@ -513,10 +550,36 @@ fun RootNavigationHome() {
 
         // New: Delete Account Screen
         composable(AppRoutes.DELETE_ACCOUNT) {
-            DeleteAccountScreen(navController = rootNavController)
+           // showDeleteAccountDialog.value = true
         }
     }
 
+    // --- Delete Account Dialog ---
+    CommonAlertDialog(
+        showDialog = showDeleteAccountDialog.value,
+        onDismissRequest = {
+            showDeleteAccountDialog.value = false
+        }, // Dismiss if user taps outside
+        title = "Delete Account",
+        subtitle = "Permanent Action",
+        message = "WARNING: Deleting your account is a permanent action and all your data will be lost. This cannot be undone.",
+        onConfirm = {
+            // --- Your Account Deletion Logic Here ---
+            Toast.makeText(context, "Initiating account deletion...", Toast.LENGTH_LONG).show()
+            Log.d("AppDialogsDemo", "User confirmed account deletion.")
+            // You would typically call a ViewModel function here to perform the actual deletion:
+            // viewModel.deleteAccount()
+            // And then navigate away or show a success message
+
+            showDeleteAccountDialog.value = false // Hide the dialog after action
+        },
+        onCancel = {
+            Toast.makeText(context, "Account deletion cancelled.", Toast.LENGTH_SHORT).show()
+            showDeleteAccountDialog.value = false // Hide the dialog
+        },
+        confirmButtonText = "Delete My Account",
+        cancelButtonText = "Keep Account"
+    )
 }
 
 sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
