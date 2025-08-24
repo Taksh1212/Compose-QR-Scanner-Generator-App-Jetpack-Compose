@@ -70,6 +70,7 @@ import com.pixeldev.compose.presentation.drawer.PrivacyPolicyScreen
 import com.pixeldev.compose.presentation.drawer.TermsConditionsScreen
 import com.pixeldev.compose.presentation.navigation.AppRoutes
 import com.pixeldev.compose.presentation.scan.ScanQrScreen
+import com.pixeldev.compose.ui.theme.DarkBackground
 import com.pixeldev.compose.ui.theme.DarkSurface
 import com.pixeldev.compose.ui.theme.PrimaryAccent
 import com.pixeldev.compose.ui.theme.PrimaryText
@@ -79,16 +80,15 @@ import com.pixeldev.compose.ui.theme.SecondaryAccent
 @Composable
 fun SettingsScreen() {
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Settings-> this is Dummy UI") })
-        }
     ) {
         LazyColumn(
             modifier = Modifier
+                .background(DarkBackground)
                 .padding(it)
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
+            item { Text("Settings-> this is Dummy UI",  color = Color.White,) }
             item { SectionTitle("Theme") }
 
             item { SectionTitle("Scan Settings") }
@@ -114,9 +114,15 @@ fun SettingsScreen() {
         }
     }
 }
+
 @Composable
 fun SectionTitle(title: String) {
-    Text(text = title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
+        color = Color.White,
+        modifier = Modifier.padding(vertical = 8.dp)
+    )
 }
 
 @Composable
@@ -128,26 +134,33 @@ fun ToggleItem(label: String, checked: Boolean, onToggle: (Boolean) -> Unit = {}
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label)
+        Text(text = label,  color = Color.White,)
         Switch(checked = checked, onCheckedChange = onToggle)
     }
 }
+
 @Composable
-fun DropdownItem(label: String, options: List<String>, selected: String, onSelect: (String) -> Unit = {}) {
+fun DropdownItem(
+    label: String,
+    options: List<String>,
+    selected: String,
+    onSelect: (String) -> Unit = {}
+) {
     var expanded by remember { mutableStateOf(false) }
     Box(modifier = Modifier.fillMaxWidth()) {
-        Text(text = "$label: $selected", modifier = Modifier
-            .fillMaxWidth()
-            .clickable { expanded = true }
-            .padding(vertical = 8.dp))
+        Text(
+            text = "$label: $selected",  color = Color.White, modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = true }
+                .padding(vertical = 8.dp))
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option)},
+                    text = { Text(option) },
                     onClick = {
-                    onSelect(option)
-                    expanded = false
-                })
+                        onSelect(option)
+                        expanded = false
+                    })
             }
         }
     }
@@ -157,7 +170,7 @@ fun DropdownItem(label: String, options: List<String>, selected: String, onSelec
 @Composable
 fun ButtonItem(text: String, onClick: () -> Unit = {}) {
     TextButton(onClick = onClick, modifier = Modifier.padding(vertical = 8.dp)) {
-        Text(text)
+        Text(text,color = Color.White,)
     }
 }
 
@@ -169,7 +182,7 @@ fun InfoItem(label: String, value: String) {
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(label)
-        Text(value)
+        Text(label,  color = Color.White,)
+        Text(value,  color = Color.White,)
     }
 }

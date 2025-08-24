@@ -151,9 +151,12 @@ fun MainScreen(rootNavController: NavHostController) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         gesturesEnabled = drawerState.isOpen,
+      //  gesturesEnabled = true, // 👈 This allows swipe gesture
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.background(Color(0xFF1F1F1F)),
+                modifier = Modifier
+                    .width(300.dp) // ✅ Standard drawer width
+                    .background(Color(0xFF1F1F1F)),
                 windowInsets = WindowInsets.systemBars.only(
                     WindowInsetsSides.Horizontal + WindowInsetsSides.End
                 )
@@ -163,7 +166,6 @@ fun MainScreen(rootNavController: NavHostController) {
                 // 💡 Apply background to a Box/Column inside the drawer sheet
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
                         .fillMaxHeight()
                         .background(DarkSurface)
                         .padding(top = 60.dp)
@@ -287,7 +289,7 @@ fun MainScreen(rootNavController: NavHostController) {
                     )
 
 
-                    Spacer(modifier = Modifier.weight(1f))
+                   // Spacer(modifier = Modifier.weight(0.1f))
 
                     // Logout button at the bottom
                     NavigationDrawerItem(

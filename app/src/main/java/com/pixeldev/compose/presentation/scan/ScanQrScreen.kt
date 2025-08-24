@@ -1,6 +1,7 @@
 package com.pixeldev.compose.presentation.scan
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.widget.Toast
@@ -14,6 +15,8 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.fillMaxSize
 
@@ -108,6 +111,14 @@ fun ScanQrScreen(navController: NavHostController, viewModel: QrViewModel) {
                         if (barcode != scannedCode) {
                             barcode = scannedCode
                             scannedDialogVisible = true
+                            // 🔔 Vibrate on scan
+                            val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+                            } else {
+                                @Suppress("DEPRECATION")
+                                vibrator.vibrate(200)
+                            }
                         }
                     },
                     modifier = Modifier
@@ -182,6 +193,10 @@ fun ScanQrScreen(navController: NavHostController, viewModel: QrViewModel) {
                             barcode = "" // Reset to allow scanning again
 
                             Toast.makeText(context, "QR code saved", Toast.LENGTH_SHORT).show()
+                            navController.navigate(BottomNavItem.History.route) {
+                                popUpTo(BottomNavItem.Scan.route) { inclusive = true }
+                                launchSingleTop = true
+                            }
                         }
                     ) {
                         Text("Save")
@@ -189,7 +204,7 @@ fun ScanQrScreen(navController: NavHostController, viewModel: QrViewModel) {
 
                     Spacer(modifier = Modifier.width(16.dp))
 
-                    TextButton(
+                   /* TextButton(
                         enabled = !isSending,
                         onClick = {
                             // Just send & navigate home, if you want to keep that
@@ -217,8 +232,8 @@ fun ScanQrScreen(navController: NavHostController, viewModel: QrViewModel) {
                             }
                         }
                     ) {
-                        Text(if (isSending) "Sending..." else "Send & Go Home")
-                    }
+                        Text(if (isSending) "Sending..." else "Send")
+                    }*/
                 }
             },
             dismissButton = {
